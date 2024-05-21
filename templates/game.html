@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Connect 4</title>
+        <style>
+            * {
+                background-color: rgb(113, 136, 145); 
+            }
+            p {
+                margin: auto;
+                text-align: center; 
+                width: 200px;  
+                font-size: 20px; 
+                margin-top: 20px; 
+            }
+            .p1{
+                width: 100px; 
+                height: 100px; 
+                background-color: #B30707;
+                border-radius: 100px;  
+                margin: auto; 
+            }
+            .p2{
+                width: 100px; 
+                height: 100px; 
+                background-color: #FFCF1B;
+                border-radius: 100px;  
+                margin: auto; 
+            }
+            .board {
+                outline: 10px solid #051B95; 
+                border-radius: 10px;
+                border-collapse: collapse; 
+                margin-left: auto; 
+                margin-right: auto; 
+                margin-top: 40px; 
+                background-color: #051B95;
+            }
+            .board_cell {
+                width: 100px;  
+                height: 100px; 
+                font-size: 20px; 
+                background-color: rgb(24, 19, 105); 
+                border-radius: 100px;  
+            }
+            .selections { 
+                margin: auto; 
+            }
+            .selection_cell {
+                width: 100px; 
+                height: 50px; 
+                font-size: 20px; 
+                text-align: center; 
+            }
+            a{
+                color: #051B95;  
+                text-decoration: none; 
+            }
+            a:hover{
+                color: #2f4aaa; 
+            }
+        </style>
+    </head>
+
+    <body>
+        <table class="board">
+            {% for i in range (board.height)%}
+                <tr>
+                    {% for j in range (board.width)%}
+                        <td class="board_cell" onclick="">
+                            {% if board.coords[i][j] %}
+                                {% if board.coords[i][j] == "P1"%}
+                                    <div class="p1"></div>
+                                {% else %}    
+                                    <div class="p2"></div>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% if status == "Ongoing" %}
+
+            <table class="selections">
+                <tr>
+                    {% for i in range(board.width) %}
+                    <td class="selection_cell">
+                        {% if i in legal_moves %}
+                            <a href="{{ url_for('play', move=i)}}">Play</a>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </table>
+
+            {% if player == "P1"%}
+                <p>Player 1's turn.</p>
+            {% else %}    
+                <p>Player 2's turn.</p>
+            {% endif %}
+
+            <p>
+                <a href="/aiplay">Have AI make a move</a>
+            </p>
+        
+        {% elif status == "Draw"%}
+            <p>Draw...</p>
+        
+        {% else %}
+            <p>{{player}} wins!</p>
+        {% endif %}
+
+
+        <p>
+            <a href="/restart">RESTART GAME</a>
+        </p>
+
+        
+
+    </body>
+</html>
