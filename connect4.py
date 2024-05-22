@@ -111,13 +111,34 @@ def check_horz_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row][col-1] == player
+        if (col >= 3
+            and b.coords[row][col-1] == player
             and b.coords[row][col-2] == player
             and b.coords[row][col-3] == player): 
             #print("HORZ WIN DETECTED")
             return True
     except: 
         pass 
+
+    try: 
+        if (col >= 1
+            and b.coords[row][col-1] == player
+            and b.coords[row][col+1] == player
+            and b.coords[row][col+2] == player): 
+            #print("HORZ WIN DETECTED")
+            return True
+    except: 
+        pass
+
+    try: 
+        if (col >= 2
+            and b.coords[row][col-1] == player
+            and b.coords[row][col-2] == player
+            and b.coords[row][col+1] == player): 
+            #print("HORZ WIN DETECTED")
+            return True
+    except: 
+        pass
 
     return False 
 
@@ -136,7 +157,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row+1][col-1] == player
+        if (col >= 3 
+            and b.coords[row+1][col-1] == player
             and b.coords[row+2][col-2] == player
             and b.coords[row+3][col-3] == player): 
             #print("DIAG WIN DETECTED")
@@ -145,7 +167,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col-1] == player
+        if (row >= 1 and col >= 1 
+            and b.coords[row-1][col-1] == player
             and b.coords[row+1][col+1] == player
             and b.coords[row+2][col+2] == player): 
             #print("DIAG WIN DETECTED")
@@ -154,7 +177,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col+1] == player
+        if (row >= 1 and col >= 2
+            and b.coords[row-1][col+1] == player
             and b.coords[row+1][col-1] == player
             and b.coords[row+2][col-2] == player): 
             #print("DIAG WIN DETECTED")
@@ -163,7 +187,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col-1] == player
+        if (row >= 2 and col >= 2
+            and b.coords[row-1][col-1] == player
             and b.coords[row-2][col-2] == player
             and b.coords[row+1][col+1] == player): 
             #print("DIAG WIN DETECTED")
@@ -172,7 +197,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col+1] == player
+        if (row >= 2 and col >= 1
+            and b.coords[row-1][col+1] == player
             and b.coords[row-2][col+2] == player
             and b.coords[row+1][col-1] == player): 
             #print("DIAG WIN DETECTED")
@@ -181,7 +207,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col-1] == player
+        if (row >= 3 and col >= 3
+            and b.coords[row-1][col-1] == player
             and b.coords[row-2][col-2] == player
             and b.coords[row-3][col-3] == player): 
             #print("DIAG WIN DETECTED")
@@ -190,7 +217,8 @@ def check_diag_win(b: board, player: str, move_coords: tuple[int, int]) -> bool:
         pass
 
     try: 
-        if (b.coords[row-1][col+1] == player
+        if (row >= 3
+            and b.coords[row-1][col+1] == player
             and b.coords[row-2][col+2] == player
             and b.coords[row-3][col+3] == player): 
             #print("DIAG WIN DETECTED")
@@ -214,13 +242,12 @@ def next_state(s: state, move: int) -> state:
             result = update_board(s.board, s.player, move)
             updated_board = result[0]
             move_coords = result[1]
-            if legal_moves(state("Ongoing", s.player, updated_board)) == []: 
-                return state("Draw", s.player, updated_board)
-            elif (check_vert_win(updated_board, s.player, move_coords) or 
+            if (check_vert_win(updated_board, s.player, move_coords) or 
                   check_horz_win(updated_board, s.player, move_coords) or 
                   check_diag_win(updated_board, s.player, move_coords)): 
-                # check_antidiag_win(updated_board, s.player, move_coords
                 return state("Win", s.player, updated_board)
+            elif legal_moves(state("Ongoing", s.player, updated_board)) == []: 
+                return state("Draw", s.player, updated_board)
             else: 
                 return state("Ongoing", switch_player(s.player), updated_board)
 

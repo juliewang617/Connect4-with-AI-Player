@@ -40,9 +40,6 @@ def minimax(state: state, player: str, depth: int, alpha: float, beta: float) ->
 # picks the next best move
 def pick_move(state: state) -> int: 
     lm = legal_moves(state)
-
-    if not lm: 
-        raise KeyError("no possible moves")
     
     best_move = lm[0]
     best_val = minimax(
@@ -61,14 +58,18 @@ def pick_move(state: state) -> int:
         match state.player: 
             case "P1": 
                 if curr_val >= best_val: 
+                    print("P1 compares move: " + str(best_move) + " with value " + str(best_val) + " with move: " + str(curr_move) + " with val: " + str(curr_val) + " and chooses " + str(best_move))
                     best_move = curr_move 
                     best_val = curr_val 
+                print("P1 compares move: " + str(best_move) + " with value " + str(best_val) + " with move: " + str(curr_move) + " with val: " + str(curr_val) + " and chooses " + str(curr_move))
             case "P2": 
                 if curr_val <= best_val: 
+                    print("P2 compares move: " + str(best_move) + " with value " + str(best_val) + " with move: " + str(curr_move) + " with val: " + str(curr_val) + " and chooses " + str(best_move))
                     best_move = curr_move 
                     best_val = curr_val 
+                print("P1 compares move: " + str(best_move) + " with value " + str(best_val) + " with move: " + str(curr_move) + " with val: " + str(curr_val) + " and chooses " + str(curr_move))
 
-    print(state.player + " chooses the move " + str(best_move))
+    print("P1 ultimately chose " + str(best_move))
     
     return best_move 
 
